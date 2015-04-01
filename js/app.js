@@ -4,7 +4,7 @@ var locationData =
 	{
 		name : "Spider-Man",
 		address : "Forest Hills, New York",
-        id: 1009368
+        id: 1009610
 	},
 	{
 		name : "Wolverine",
@@ -14,7 +14,7 @@ var locationData =
 	{
 		name : "Iron Man",
 		address : "Long Island, New York",
-        id: 1009610
+        id: 1009368
 	},
 	{
 		name : "3-D Man",
@@ -54,14 +54,7 @@ var Place= function(data)
 	this.visible = ko.observable(true);
 	this.marker = data.marker;
 	
-	self.info = ko.computed( function()
-	{
-		var output = '<div class="info-window">';
-		output += '<p class="window-name">'+self.name+'</p>';
-		output += '<p class="window-address">'+self.address+'</p>';
-        output += '</div>';
-		return output;
-	});
+	
 	
 };
 
@@ -178,7 +171,7 @@ var MapViewModel = function()
 				if (status == google.maps.places.PlacesServiceStatus.OK)
 				{
 					self.addPlace(location.name,location.address,location.id, results[0]);
-				}
+				} 
 			});
 		});
 	};
@@ -273,9 +266,14 @@ var MapViewModel = function()
 	{
 		self.characterListOpen(!self.characterListOpen());
 	};
-    
-    this.requestCharacterData = function() {
-        var marvelAPIurl = 'http://gateway.marvel.com/v1/public/characters?id=' +characterID + '&ts=1&apikey=e0fb310884d9d2f6becaacb508f3b69f&hash=3ad897582261676d9a57067e959bc2d2';
+	
+	this.setCurrentPlace= function(place)
+	{
+        
+        
+        
+        
+        var marvelAPIurl = 'http://gateway.marvel.com/v1/public/characters?id=' + place.id + '&ts=1&apikey=e0fb310884d9d2f6becaacb508f3b69f&hash=3ad897582261676d9a57067e959bc2d2';
     
     // error handling in case Marvel API does not respond within 8 seconds
     var MarvelRequestTimeout = setTimeout(function () {
@@ -295,40 +293,47 @@ var MapViewModel = function()
 
         // convert string to JSON object & store data object we need
         var result = JSON.parse(request.response).data.results[0];
-console.log(result);
-        /* error handling when API did not provide character description
+        console.log(result);
+        //error handling when API did not provide character description
         if (result.description === "") {
-            currentCharacter.description = "Bummer, there is no description available for this character.";
+            place.description = "Bummer, there is no description available for this character.";
         } else {
             // stores the character description if there is one
-            currentCharacter.description = result.description;
+            place.description = result.description;
         }
 
         // stores the marvel universe wiki link for this character
-        currentCharacter.wiki = result.urls[1].url;
+        place.wiki = result.urls[1].url;
 
         // stores the url of the picture for this character
-        currentCharacter.pic = result.thumbnail.path + '.' + result.thumbnail.extension;
- */
+        place.pic = result.thumbnail.path + '.' + result.thumbnail.extension;
+        
+        
+        
+        place.info = ko.computed( function()
+	{
+		var output = '<div class="info-window">';
+		output += '<img class="window-picture" src="'+place.pic+'"></img>';
+        output += '<div class="window-name">'+place.name+'</div>';
+		output += '<div class="window-address">'+place.address+'</div>';
+        output += '<div class="window-description">'+place.description+'</div>';
+        output += '<a class="window-wiki" href="'+place.wiki+'">Check out this character on the Marvel Universe Wiki</a>';
+        output += '</div>';
+		console.log(place)
+        return output;
+	});
+        
+        
         // resets timeout function
         clearTimeout(MarvelRequestTimeout);
-    };
-
-    request.send();
-    
-    // prevents return
-    // return false;
-    }
-	
-	this.setCurrentPlace= function(place)
-	{
-        var characterID = place.id;
-        console.log(characterID);
-        self.requestCharacterData();
         
-		if (self.currentPlace() !== place)
+        
+        
+        
+        if (self.currentPlace() !== place)
 		{
 			self.currentPlace(place);
+            console.log(place);
 			self.displayInfo(place);
 		}
 		else
@@ -339,6 +344,17 @@ console.log(result);
 		}
         
         self.characterListOpen(!self.characterListOpen());
+        
+    };
+
+    request.send();
+
+
+        
+        
+        
+        
+		
 	};
 	
 	this.resetCenter = function()
