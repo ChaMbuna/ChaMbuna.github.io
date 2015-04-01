@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
@@ -10,32 +11,34 @@
 
 <body>
 
-	<form class="search-form" data-bind="submit: filterSubmit">
-		<input data-bind="value: filterQuery" class="search-bar" placeholder="Search for characters">
-		<button class="search-submit" type="submit"><span>Filter</span></button>
-        
-        <button class="places-list-toggle" data-bind="click: togglecharacterList"></button>
-	</form>
-    
-	<div id="map"></div>
+    <form class="search-form" data-bind="submit: filterSubmit">
+        <input data-bind="value: filterQuery" class="search-bar" placeholder="Search for characters">
+        <button class="search-submit" type="submit"><span>Filter</span>
+        </button>
 
-	<div id="places" data-bind="css: characterListClass">
-		
-		<ul class="places-list" data-bind="foreach: { data: sortedPlaces, as: 'place' }">
-        	<a class="place-link" href="#" data-bind="click: $parent.setCurrentPlace">
-			<li class="place-info" data-bind="css: {hidden : !visible(), current : $parent.currentPlace() === place}, attr: {id : marker.id}">
-				<p class="place-name" data-bind="text: name"></p>
-				<p class="place-address" data-bind="text: address"></p>
-			</li>
+        <button class="places-list-toggle" data-bind="click: togglecharacterList"></button>
+    </form>
+    <div id="map"></div>
+
+    <div id="places" data-bind="css: characterListClass">
+
+        <ul class="places-list" data-bind="foreach: { data: sortedPlaces, as: 'place' }">
+            <a class="place-link" href="#" data-bind="click: $parent.setCurrentPlace">
+                <li class="place-info" data-bind="css: {hidden : !visible(), current : $parent.currentPlace() === place}, attr: {id : marker.id}">
+                    <p class="place-name" data-bind="text: name"></p>
+                    <p class="place-address" data-bind="text: address"></p>
+                </li>
             </a>
-		</ul>
-	</div>
+        </ul>
+    </div>
 
     <script src="js/googlemaps-styles.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
     <script src="js/jquery-1.11.2.min.js"></script>
     <script src="js/knockout-3.2.0.js"></script>
+    <script src="js/model.js"></script>
     <script src="js/app.js"></script>
-    
+
 </body>
+
 </html>
