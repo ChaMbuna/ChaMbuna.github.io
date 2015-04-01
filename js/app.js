@@ -54,12 +54,12 @@ var Place= function(data)
 	this.visible = ko.observable(true);
 	this.marker = data.marker;
 	
-	this.info = ko.computed( function()
+	self.info = ko.computed( function()
 	{
 		var output = '<div class="info-window">';
 		output += '<p class="window-name">'+self.name+'</p>';
 		output += '<p class="window-address">'+self.address+'</p>';
-		output += '</div>';
+        output += '</div>';
 		return output;
 	});
 	
@@ -273,10 +273,59 @@ var MapViewModel = function()
 	{
 		self.characterListOpen(!self.characterListOpen());
 	};
+    
+    this.requestCharacterData = function() {
+        var marvelAPIurl = 'http://gateway.marvel.com/v1/public/characters?id=' +characterID + '&ts=1&apikey=e0fb310884d9d2f6becaacb508f3b69f&hash=3ad897582261676d9a57067e959bc2d2';
+    
+    // error handling in case Marvel API does not respond within 8 seconds
+    var MarvelRequestTimeout = setTimeout(function () {
+        return alert('The Marvel API is not available right now');
+    }, 8000);
+
+    // perform AJAX request and store results in currentCharacter object
+    var request = new XMLHttpRequest();
+    request.open("GET", marvelAPIurl, true);
+    request.onreadystatechange = function () {
+        // prevent entering onreadystatechange before its ready
+          if (request.readyState !== 4) return;
+        // check if state and status are good to go, if not throw alert
+          if (request.readyState != 4 && request.status != 200) {
+            return alert('Google Maps is not available right now');
+        }
+
+        // convert string to JSON object & store data object we need
+        var result = JSON.parse(request.response).data.results[0];
+console.log(result);
+        /* error handling when API did not provide character description
+        if (result.description === "") {
+            currentCharacter.description = "Bummer, there is no description available for this character.";
+        } else {
+            // stores the character description if there is one
+            currentCharacter.description = result.description;
+        }
+
+        // stores the marvel universe wiki link for this character
+        currentCharacter.wiki = result.urls[1].url;
+
+        // stores the url of the picture for this character
+        currentCharacter.pic = result.thumbnail.path + '.' + result.thumbnail.extension;
+ */
+        // resets timeout function
+        clearTimeout(MarvelRequestTimeout);
+    };
+
+    request.send();
+    
+    // prevents return
+    // return false;
+    }
 	
 	this.setCurrentPlace= function(place)
 	{
-        console.log(place.id);
+        var characterID = place.id;
+        console.log(characterID);
+        self.requestCharacterData();
+        
 		if (self.currentPlace() !== place)
 		{
 			self.currentPlace(place);
