@@ -229,13 +229,13 @@ var MapViewModel = function () {
         // url for the Marvel AJAX request
         var marvelAPIurl = 'http://gateway.marvel.com/v1/public/characters?id=' + place.id + '&ts=1&apikey=e0fb310884d9d2f6becaacb508f3b69f&hash=3ad897582261676d9a57067e959bc2d2';
 
-        // error handling in case Marvel API does not respond within 8 seconds
+        // error handling in case Marvel API does not respond within 5 seconds
         var MarvelRequestTimeout = setTimeout(function () {
             // set overlay with error message
             document.getElementById('error-message').innerHTML = 'Ha Ha Ha. the Marvel API is down!';
             document.getElementById('error-screen').style.display="inherit";
             return false;
-        }, 3000);
+        }, 5000);
 
         // perform AJAX request and store results in character place object
         var request = new XMLHttpRequest();
