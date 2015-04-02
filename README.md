@@ -14,9 +14,9 @@ I wanted to do something different than simply show pizza places in an area. My 
 
 Launching the website
 ---------------------
-<a href="http://www.pixelflavored.com/marvel">You can run the app here</a>
+<a href="http://chambuna.github.io/">You can run the app here</a>
 
-<a href="https://github.com/ChaMbuna/MarvelMap-v2">You can find the project on Github here</a>
+<a href="https://github.com/ChaMbuna/chambuna.github.io">You can find the project on Github here</a>
 
 
 Using the website
