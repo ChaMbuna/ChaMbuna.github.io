@@ -10,6 +10,10 @@
 </head>
 
 <body>
+    <div id="error-screen">
+        <img id="octopus" src="img/dr-octopus.png">
+        <div id="error-message"></div>
+    </div>
 
     <form class="search-form" data-bind="submit: filterSubmit">
         <input data-bind="value: filterQuery" class="search-bar" placeholder="Search for characters">
@@ -26,7 +30,7 @@
             <a class="place-link" href="#" data-bind="click: $parent.setCurrentPlace">
                 <li class="place-info" data-bind="css: {hidden : !visible(), current : $parent.currentPlace() === place}, attr: {id : marker.id}">
                     <p class="place-name" data-bind="text: name"></p>
-                    <p class="place-address" data-bind="text: address"></p>
+                    <!--<p class="place-address" data-bind="text: address"></p>-->
                 </li>
             </a>
         </ul>
